@@ -16,7 +16,15 @@ namespace MixAuth.Models
         public string Audience { get; set; } = "client";
 
         //令牌密码
-        public string SecurityKey { get; set; } = "a secret that needs to be at least 16 characters long";
+        public string SecurityKey { get; private set; } = "a secret that needs to be at least 16 characters long";
+
+        //修改密码，重新创建数字签名
+        public void SetSecurityKey(string value)
+        {
+            SecurityKey = value;
+
+            CreateKey();
+        }
 
         //对称秘钥
         public SymmetricSecurityKey Key { get; set; }
@@ -25,6 +33,11 @@ namespace MixAuth.Models
         public SigningCredentials Credentials { get; set; }
 
         public JWTTokenOptions()
+        {
+            CreateKey();
+        }
+
+        private void CreateKey()
         {
             Key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecurityKey));
             Credentials = new SigningCredentials(Key, SecurityAlgorithms.HmacSha256);
