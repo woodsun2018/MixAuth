@@ -1,0 +1,25 @@
+﻿@if (User.Identity.IsAuthenticated)
+{
+    <form asp-controller="Home" asp-action="Logout" method="post" class="navbar-right">
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a href="#">@User.Identity.Name</a>
+            </li>
+            <li>
+                <button type="submit" class="btn btn-link navbar-btn navbar-link">
+                    退出登录
+                </button>
+            </li>
+        </ul>
+    </form>
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            <a asp-controller="Home" asp-action="Login" asp-route-returnUrl="/Home">
+                登录
+            </a>
+        </li>
+    </ul>
+}
